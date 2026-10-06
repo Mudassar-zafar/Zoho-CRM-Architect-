@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Referring Practice Portal, illustrative preview</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000C21; --bg-2:#01122E; --surface:#0A1B38; --surface-2:#0C2047;
+    --line:rgba(205,214,232,.12); --line-strong:rgba(205,214,232,.22);
+    --cream:#F2F5FC; --muted:rgba(226,232,246,.62); --muted-2:rgba(226,232,246,.42);
+    --accent:#2F6BFF; --accent-2:#5995F7; --accent-soft:rgba(47,107,255,.15);
+    --violet:#5229CD; --violet-2:#6B46E0; --violet-soft:rgba(82,41,205,.18);
+    --ok:#2FB183; --ok-soft:rgba(47,177,131,.16);
+    --warn:#E0A94B; --warn-soft:rgba(224,169,75,.16);
+    --light:#F2F5FC; --light-2:#E9ECF3;
+    --r:16px; --r-sm:10px;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(85% 55% at 50% -8%, rgba(47,107,255,.16), rgba(47,107,255,0) 60%),
+      radial-gradient(60% 45% at 100% 2%, rgba(82,41,205,.16), rgba(82,41,205,0) 55%),
+      radial-gradient(55% 40% at 0% 8%, rgba(89,149,247,.10), rgba(89,149,247,0) 60%),
+      var(--bg);
+    background-attachment:fixed;
+    color:var(--cream);font-family:var(--font);
+    font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent-2);text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+  .muted{color:var(--muted)}
+  .tiny{font-size:12px}
+
+  /* honesty bar */
+  .honesty{background:var(--accent-soft);border-bottom:1px solid var(--line);
+    font-size:12.5px;color:var(--cream)}
+  .honesty .wrap{display:flex;gap:10px;align-items:center;padding:9px 20px;flex-wrap:wrap}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);flex:0 0 auto}
+
+  /* top bar */
+  header.top{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
+    background:rgba(0,12,33,.82);backdrop-filter:blur(12px)}
+  .top .wrap{display:flex;align-items:center;gap:18px;padding:16px 20px}
+  .mark{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:-.01em}
+  .mark .glyph{width:30px;height:30px;border-radius:9px;
+    background:linear-gradient(145deg,var(--violet),var(--accent));
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;font-weight:700}
+  .mark small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;letter-spacing:.02em}
+  nav.tabs{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+  .tabbtn{border:1px solid var(--line-strong);background:transparent;color:var(--muted);
+    font:inherit;font-size:13px;padding:8px 15px;border-radius:999px;cursor:pointer;transition:.15s}
+  .tabbtn:hover{color:var(--cream);border-color:var(--cream)}
+  .tabbtn.active{background:var(--cream);color:#0A0A0C;border-color:var(--cream);font-weight:500}
+
+  /* context strip (viewing as) */
+  .context{border-bottom:1px solid var(--line);background:var(--surface)}
+  .context .wrap{display:flex;align-items:center;gap:14px;padding:14px 20px;flex-wrap:wrap}
+  .ctx-label{font-size:12px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.08em}
+  select.switch{appearance:none;background:var(--surface-2);color:var(--cream);
+    border:1px solid var(--line-strong);border-radius:999px;padding:8px 34px 8px 15px;font:inherit;
+    font-size:13.5px;cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23F6F6F4' stroke-width='1.6'><path d='M2 4l4 4 4-4'/></svg>");
+    background-repeat:no-repeat;background-position:right 13px center}
+  .scope-note{margin-left:auto;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .lock{width:13px;height:13px;flex:0 0 auto;opacity:.7}
+
+  main{padding:30px 0 70px}
+  .page-head{margin:6px 0 22px}
+  .page-head h1{font-size:26px;font-weight:600;letter-spacing:-.02em;margin:0 0 5px}
+  .page-head p{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
+
+  /* kpi row */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 17px}
+  .kpi .n{font-size:28px;font-weight:600;letter-spacing:-.02em}
+  .kpi .l{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .kpi .sub{font-size:11.5px;color:var(--muted-2);margin-top:8px}
+
+  /* panels */
+  .grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;align-items:start}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .panel-h{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid var(--line)}
+  .panel-h h2{font-size:14.5px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .panel-h .pill{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);
+    padding:3px 10px;border-radius:999px}
+  .panel-b{padding:6px 0}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-weight:500;color:var(--muted-2);font-size:11.5px;text-transform:uppercase;
+    letter-spacing:.05em;padding:10px 18px;border-bottom:1px solid var(--line)}
+  td{padding:12px 18px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .who{font-weight:500}
+  .who small{display:block;color:var(--muted-2);font-weight:400;font-size:11.5px;margin-top:1px}
+
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:4px 10px;
+    border-radius:999px;border:1px solid var(--line-strong);white-space:nowrap}
+  .chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted)}
+  .chip.blue{background:var(--accent-soft);border-color:transparent;color:var(--accent-2)} .chip.blue::before{background:var(--accent-2)}
+  .chip.ok{background:var(--ok-soft);border-color:transparent;color:var(--ok)} .chip.ok::before{background:var(--ok)}
+  .chip.warn{background:var(--warn-soft);border-color:transparent;color:var(--warn)} .chip.warn::before{background:var(--warn)}
+
+  .btn{border:1px solid var(--line-strong);background:transparent;color:var(--cream);font:inherit;
+    font-size:12.5px;padding:7px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+  .btn:hover{border-color:var(--cream)}
+  .btn.pri{background:linear-gradient(160deg,var(--violet),var(--violet-2));border-color:transparent;color:#fff}
+  .btn.pri:hover{filter:brightness(1.12)}
+  .btn.sm{font-size:11.5px;padding:5px 11px}
+
+  .docrow{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--line)}
+  .docrow:last-child{border-bottom:none}
+  .docrow .dname{font-size:13.5px}
+  .docrow .dname small{display:block;color:var(--muted-2);font-size:11.5px}
+  .docrow .right{margin-left:auto;display:flex;align-items:center;gap:9px}
+
+  .list{padding:4px 0}
+  .lrow{display:flex;justify-content:space-between;gap:12px;padding:11px 18px;border-bottom:1px solid var(--line);font-size:13.5px}
+  .lrow:last-child{border-bottom:none}
+  .lrow .v{color:var(--cream);font-weight:500}
+
+  .note{margin:10px 18px 14px;font-size:11.5px;color:var(--muted-2);display:flex;gap:8px;align-items:flex-start}
+  .note svg{flex:0 0 auto;margin-top:1px;opacity:.7}
+
+  .bal{display:flex;align-items:baseline;gap:8px;padding:16px 18px 4px}
+  .bal .amt{font-size:30px;font-weight:600;letter-spacing:-.02em}
+  .bal .cap{font-size:12px;color:var(--muted)}
+
+  /* boundary callout */
+  .boundary{margin-top:22px;background:linear-gradient(180deg,var(--surface),var(--surface-2));
+    border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+  .boundary h3{margin:0 0 12px;font-size:14px;font-weight:600}
+  .bcols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .bcol{border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;background:rgba(0,0,0,.2)}
+  .bcol h4{margin:0 0 9px;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  .bcol.ext h4{color:var(--accent-2)} .bcol.int h4{color:var(--warn)}
+  .bcol ul{margin:0;padding-left:16px} .bcol li{margin:5px 0;font-size:12.5px;color:var(--muted)}
+  .bcol li b{color:var(--cream);font-weight:500}
+
+  /* staff pipeline score bar */
+  .score{display:flex;align-items:center;gap:9px}
+  .bar{width:70px;height:6px;border-radius:999px;background:var(--line-strong);overflow:hidden}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--accent))}
+  .score b{font-size:12.5px;font-weight:600}
+
+  .audit{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--muted);
+    padding:6px 18px;border-bottom:1px solid var(--line)}
+  .audit:last-child{border-bottom:none}
+  .audit b{color:var(--accent-2);font-weight:600}
+
+  /* notes tab */
+  .notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .ncard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+  .ncard h3{margin:0 0 4px;font-size:15px;font-weight:600}
+  .ncard .k{font-size:12px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+  .ncard ul{margin:0;padding-left:17px} .ncard li{margin:9px 0;color:var(--muted);font-size:13.5px}
+  .ncard li b{color:var(--cream);font-weight:500}
+
+  footer{border-top:1px solid var(--line);margin-top:40px}
+  footer .wrap{padding:22px 20px;color:var(--muted-2);font-size:12px;display:flex;gap:14px;
+    justify-content:space-between;flex-wrap:wrap}
+
+  .hidden{display:none}
+  @media(max-width:860px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .grid{grid-template-columns:1fr}
+    .bcols,.notes-grid{grid-template-columns:1fr}
+    .mark small{display:none}
+  }
+</style>
+</head>
+<body>
+
+  <div class="honesty">
+    <div class="wrap">
+      <span class="dot"></span>
+      <span><b>Illustrative preview on sample data.</b> This is a concept of the referring practice portal, not a live system and not connected to any real records. Every name and figure below is invented for this walkthrough.</span>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="wrap">
+      <div class="mark">
+        <span class="glyph">R</span>
+        <span>Referring Practice Portal
+          <small>Built on your Zoho CRM as the single source of truth</small>
+        </span>
+      </div>
+      <nav class="tabs">
+        <button class="tabbtn active" data-tab="portal">Practice portal</button>
+        <button class="tabbtn" data-tab="staff">Staff view</button>
+        <button class="tabbtn" data-tab="notes">Design &amp; compliance</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTEXT STRIP -->
+  <div class="context" id="ctxStrip">
+    <div class="wrap">
+      <span class="ctx-label">Viewing as</span>
+      <select class="switch" id="practiceSwitch" aria-label="Switch sample referring practice">
+        <option value="summit">Summit Neurology Partners (sample)</option>
+        <option value="riverside">Riverside Family Medicine (sample)</option>
+        <option value="cedar">Cedar Spine &amp; Pain Clinic (sample)</option>
+      </select>
+      <span class="scope-note">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        You see only this practice's own referrals. Access is scoped per account.
+      </span>
+    </div>
+  </div>
+
+  <main>
+    <div class="wrap">
+
+      <!-- ============ PRACTICE PORTAL ============ -->
+      <section id="tab-portal">
+        <div class="page-head">
+          <h1 id="pTitle">Summit Neurology Partners</h1>
+          <p>Case status, document requests, and your account balance, pulled live from the practice's CRM. You see your referrals and nothing else.</p>
+        </div>
+
+        <div class="kpis" id="kpis"></div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-h"><h2>Your referrals</h2><span class="pill">Status from Deal stage</span></div>
+            <div class="panel-b">
+              <table>
+                <thead><tr><th>Patient</th><th>Referred for</th><th>Status</th><th>Last update</th></tr></thead>
+                <tbody id="caseRows"></tbody>
+              </table>
+              <div class="note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+                Minimum necessary: you see the patients you referred, their status and the documents you owe or are owed. No other practice's patients, no clinical notes, no internal scoring.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel" style="margin-bottom:18px">
+              <div class="panel-h"><h2>Documents</h2><span class="pill">Logged as account activity</span></div>
+              <div class="panel-b" id="docList"></div>
+            </div>
+
+            <div class="panel" style="margin-bottom:18px">
+              <div class="panel-h"><h2>Account balance</h2><span class="pill">From receivables</span></div>
+              <div class="bal"><span class="amt" id="balAmt">$0</span><span class="cap" id="balCap"></span></div>
+              <div class="list" id="invList"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-h"><h2>Your referral summary</h2></div>
+              <div class="list" id="sumList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ STAFF VIEW ============ -->
+      <section id="tab-staff" class="hidden">
+        <div class="page-head">
+          <h1>Staff view, referring partner pipeline</h1>
+          <p>What the practice's own team sees inside the CRM. This is the engine behind the portal: every partner ranked, every relationship dated, dormant partners surfaced for reactivation. Referring practices never see this screen.</p>
+        </div>
+
+        <div class="panel" style="margin-bottom:18px">
+          <div class="panel-h"><h2>Referring partner pipeline</h2><span class="pill">Accounts module</span></div>
+          <div class="panel-b">
+            <table>
+              <thead><tr><th>Referring practice</th><th>Stage</th><th>Last referral</th><th>Next touch</th><th>Partner score</th><th>Owner</th></tr></thead>
+              <tbody id="pipeRows"></tbody>
+            </table>
+            <div class="note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+              Partner score is the CEO's model (case mix and collected value), hardened and made consistent. Last referral and next touch are set by workflow, so a partner going quiet is caught early, not months later.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="panel">
+            <div class="panel-h"><h2>Dormant partner reactivation</h2><span class="pill">Workflow driven</span></div>
+            <div class="panel-b">
+              <table>
+                <thead><tr><th>Practice</th><th>Sent</th><th>Quiet since</th><th>Sequence</th></tr></thead>
+                <tbody id="dormRows"></tbody>
+              </table>
+              <div class="note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+                A partner who sent one case and went quiet is pipeline, not a lost cause. Each sits in a logged "lost" sequence so every touch is an activity on the account.
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-h"><h2>Access &amp; audit</h2><span class="pill">Role profiles</span></div>
+            <div class="panel-b">
+              <div class="audit"><b>GRANT</b> summit-portal viewed CASE-4821 scope=own-account ok</div>
+              <div class="audit"><b>DENY&nbsp;</b> summit-portal requested CASE-5090 scope=other-account blocked</div>
+              <div class="audit"><b>WRITE</b> riverside-portal uploaded referral-form -> Activity on Account</div>
+              <div class="audit"><b>GRANT</b> staff-user opened full patient record role=clinical</div>
+              <div class="note" style="margin-top:12px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+                Every portal view and request is audit logged. Cross account requests are denied by the per account sharing rule, not by hiding fields in the UI.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="boundary">
+          <h3>The PHI boundary, by design</h3>
+          <div class="bcols">
+            <div class="bcol ext">
+              <h4>Referring practice sees</h4>
+              <ul>
+                <li><b>Its own</b> referred patients only</li>
+                <li>Status, documents owed, its account balance</li>
+                <li>No other practice's data, ever</li>
+                <li>No clinical notes, no internal scoring</li>
+                <li>No PHI in emails or links, only in session</li>
+              </ul>
+            </div>
+            <div class="bcol int">
+              <h4>Practice staff sees</h4>
+              <ul>
+                <li>Full patient record under a <b>clinical role</b></li>
+                <li>The whole partner pipeline and scores</li>
+                <li>Dormant list and reactivation sequences</li>
+                <li>Every access written to the <b>audit log</b></li>
+                <li>Governed by role profiles, not UI tricks</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ NOTES ============ -->
+      <section id="tab-notes" class="hidden">
+        <div class="page-head">
+          <h1>Design decisions, and what I would verify first</h1>
+          <p>This preview is built to be defensible, not just to look finished. Below is how it maps to your Zoho and the questions I would answer against your live instance before building anything.</p>
+        </div>
+        <div class="notes-grid">
+          <div class="ncard">
+            <div class="k">How this maps to your Zoho</div>
+            <h3>Nothing new to re-platform</h3>
+            <ul>
+              <li>Portal is <b>Accounts</b> data, scoped per referring practice with role based sharing.</li>
+              <li>Case status reads the <b>Deal stage</b>, so the portal is never a second version of the truth.</li>
+              <li>A document request writes back as an <b>Activity on the Account</b>, so every touch is logged.</li>
+              <li>Balances come from the receivables feed, read only, scoped to that account.</li>
+              <li>Built with CRM Portals or Creator on your existing instance, in a sandbox first.</li>
+            </ul>
+          </div>
+          <div class="ncard">
+            <div class="k">Compliance decisions</div>
+            <h3>What a reviewer can approve</h3>
+            <ul>
+              <li><b>Minimum necessary:</b> a practice sees its own referrals, status, documents, balance. No clinical notes.</li>
+              <li><b>Per account isolation</b> enforced by sharing rules, confirmed by a deny test, not by hiding fields.</li>
+              <li><b>No PHI</b> in notification subject lines, bodies, or URLs. Links resolve only after auth.</li>
+              <li><b>Audit trail</b> on every view and request, retained per your policy.</li>
+              <li>Under your <b>BAA</b>, with role profiles for portal, front desk, and clinical.</li>
+            </ul>
+          </div>
+          <div class="ncard">
+            <div class="k">What I verify first</div>
+            <h3>Before touching the live instance</h3>
+            <ul>
+              <li>Which single field currently owns "who referred this," and where it doubles as service.</li>
+              <li>How the four pipelines in the Deals module actually differ, before any split.</li>
+              <li>The exact behavior change in the mid year boolean, with record samples.</li>
+              <li>The shape of the 4,700 row external ID file against current keys.</li>
+              <li>Every change in a <b>sandbox</b> with a rollback and a change log, nothing live blind.</li>
+            </ul>
+          </div>
+          <div class="ncard">
+            <div class="k">Why it is built this way</div>
+            <h3>One field, one job</h3>
+            <ul>
+              <li>The portal only works once each fact has one owning field, so the status it shows is trustworthy.</li>
+              <li>Reconcile source, value, and follow through to one record first, then expose a slice of it.</li>
+              <li>A portal on messy data just publishes the mess faster, so hygiene comes before access.</li>
+              <li>Documentation is written as the build happens, so anyone can maintain it after me.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Illustrative concept prepared for your review. Sample data only, not a live system.</span>
+      <span id="stamp"></span>
+    </div>
+  </footer>
+
+<script>
+/* ---------- sample data (all invented) ---------- */
+const DATA = {
+  summit: {
+    name:"Summit Neurology Partners",
+    kpis:{active:7, awaiting:2, balance:"$1,240", reports:3},
+    cases:[
+      {p:"Marcus Deane", dob:"1961", for:"Neuropathy workup", st:["In treatment","blue"], upd:"2 days ago"},
+      {p:"Gloria Fenn", dob:"1973", for:"EMG / nerve study", st:["Report sent","ok"], upd:"5 days ago"},
+      {p:"Ray Okafor", dob:"1958", for:"Complex spine consult", st:["Scheduled","blue"], upd:"1 day ago"},
+      {p:"Helen Marsh", dob:"1967", for:"Second opinion", st:["Awaiting documents","warn"], upd:"today"},
+      {p:"Tomas Ruiz", dob:"1980", for:"Headache program", st:["Received","muted"], upd:"3 hrs ago"},
+    ],
+    docs:[
+      {n:"Signed referral form", s:"Needed from you", st:["Needed","warn"], act:"upload"},
+      {n:"Recent imaging (MRI)", s:"Needed from you", st:["Needed","warn"], act:"upload"},
+      {n:"Consult summary", s:"Ready for you", st:["Available","ok"], act:"view"},
+    ],
+    bal:{amt:"$1,240", cap:"across 2 open items", inv:[
+      {k:"INV-2041, co-managed study", v:"$740"},
+      {k:"INV-2066, shared supplies", v:"$500"},
+    ]},
+    sum:[["Total referred (12 mo)","41"],["Active now","7"],["Last referral","1 day ago"],["Avg time to first update","6 hrs"]],
+  },
+  riverside: {
+    name:"Riverside Family Medicine",
+    kpis:{active:3, awaiting:1, balance:"$0", reports:1},
+    cases:[
+      {p:"Dana Whitlock", dob:"1949", for:"Tremor evaluation", st:["In review","blue"], upd:"4 days ago"},
+      {p:"Pavel Sorin", dob:"1988", for:"Nerve study", st:["Awaiting documents","warn"], upd:"today"},
+      {p:"Irene Baptiste", dob:"1975", for:"Follow up", st:["Report sent","ok"], upd:"1 week ago"},
+    ],
+    docs:[
+      {n:"Signed referral form", s:"Needed from you", st:["Needed","warn"], act:"upload"},
+      {n:"Visit summary", s:"Ready for you", st:["Available","ok"], act:"view"},
+    ],
+    bal:{amt:"$0", cap:"nothing outstanding", inv:[{k:"No open invoices", v:"Paid"}]},
+    sum:[["Total referred (12 mo)","9"],["Active now","3"],["Last referral","4 days ago"],["Avg time to first update","9 hrs"]],
+  },
+  cedar: {
+    name:"Cedar Spine & Pain Clinic",
+    kpis:{active:5, awaiting:3, balance:"$680", reports:0},
+    cases:[
+      {p:"Nadia Croft", dob:"1969", for:"Spine consult", st:["Scheduled","blue"], upd:"2 days ago"},
+      {p:"Owen Blackwell", dob:"1954", for:"Pain program intake", st:["Awaiting documents","warn"], upd:"today"},
+      {p:"Priya Nandal", dob:"1991", for:"Nerve study", st:["Awaiting documents","warn"], upd:"today"},
+      {p:"Grant Hollis", dob:"1963", for:"Second opinion", st:["In review","blue"], upd:"3 days ago"},
+    ],
+    docs:[
+      {n:"Signed referral form", s:"Needed from you", st:["Needed","warn"], act:"upload"},
+      {n:"Prior auth document", s:"Needed from you", st:["Needed","warn"], act:"upload"},
+    ],
+    bal:{amt:"$680", cap:"across 1 open item", inv:[{k:"INV-3012, shared intake", v:"$680"}]},
+    sum:[["Total referred (12 mo)","23"],["Active now","5"],["Last referral","2 days ago"],["Avg time to first update","7 hrs"]],
+  }
+};
+
+const PIPE = [
+  {p:"Summit Neurology Partners", stage:["Active, high value","blue"], last:"1 day ago", next:"in 6 days", score:92, owner:"A. Reed"},
+  {p:"Cedar Spine & Pain Clinic", stage:["Active","blue"], last:"2 days ago", next:"in 9 days", score:74, owner:"A. Reed"},
+  {p:"Lakeside Orthopedics", stage:["Slowing","warn"], last:"38 days ago", next:"this week", score:58, owner:"J. Pike"},
+  {p:"Riverside Family Medicine", stage:["Active","blue"], last:"4 days ago", next:"in 10 days", score:49, owner:"J. Pike"},
+  {p:"Harbor Internal Medicine", stage:["Dormant","muted"], last:"5 months ago", next:"today", score:21, owner:"Unassigned"},
+];
+const DORM = [
+  {p:"Harbor Internal Medicine", sent:"1 case", since:"5 months", seq:["Lost, step 2 of 4","warn"]},
+  {p:"Grove Pediatrics", sent:"1 case", since:"7 months", seq:["Lost, step 1 of 4","warn"]},
+  {p:"Westgate Physical Therapy", sent:"2 cases", since:"4 months", seq:["Lost, step 3 of 4","warn"]},
+];
+
+/* ---------- render ---------- */
+const el = id => document.getElementById(id);
+function chip(label, kind){ const k = kind==='muted'?'':kind; return `<span class="chip ${k}">${label}</span>`; }
+
+function renderPortal(key){
+  const d = DATA[key];
+  el('pTitle').textContent = d.name;
+  el('kpis').innerHTML = [
+    {n:d.kpis.active, l:"Active referrals", s:"in progress now"},
+    {n:d.kpis.awaiting, l:"Awaiting documents", s:"action needed from you"},
+    {n:d.kpis.balance, l:"Account balance", s:"your account only"},
+    {n:d.kpis.reports, l:"Reports ready", s:"available to view"},
+  ].map(k=>`<div class="kpi"><div class="n">${k.n}</div><div class="l">${k.l}</div><div class="sub">${k.s}</div></div>`).join('');
+
+  el('caseRows').innerHTML = d.cases.map(c=>`
+    <tr><td class="who">${c.p}<small>DOB ${c.dob}, your referral</small></td>
+    <td>${c.for}</td><td>${chip(c.st[0],c.st[1])}</td>
+    <td class="muted">${c.upd}</td></tr>`).join('');
+
+  el('docList').innerHTML = d.docs.map((x,i)=>`
+    <div class="docrow"><div class="dname">${x.n}<small>${x.s}</small></div>
+    <div class="right">${chip(x.st[0],x.st[1])}
+    ${x.act==='upload'
+      ? `<button class="btn pri sm" data-doc="${i}">Upload</button>`
+      : `<button class="btn sm">View</button>`}</div></div>`).join('');
+  // wire upload (in memory only, no real capture)
+  el('docList').querySelectorAll('[data-doc]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const row = b.closest('.docrow');
+      row.querySelector('.chip').outerHTML = chip('Uploaded','ok');
+      row.querySelector('.dname small').textContent = 'Received, logged as account activity';
+      b.outerHTML = '<span class="muted tiny">Done</span>';
+    });
+  });
+
+  el('balAmt').textContent = d.bal.amt;
+  el('balCap').textContent = d.bal.cap;
+  el('invList').innerHTML = d.bal.inv.map(i=>`<div class="lrow"><span class="muted">${i.k}</span><span class="v">${i.v}</span></div>`).join('');
+  el('sumList').innerHTML = d.sum.map(s=>`<div class="lrow"><span class="muted">${s[0]}</span><span class="v">${s[1]}</span></div>`).join('');
+}
+
+function renderStaff(){
+  el('pipeRows').innerHTML = PIPE.map(r=>`
+    <tr><td class="who">${r.p}</td><td>${chip(r.stage[0],r.stage[1])}</td>
+    <td class="muted">${r.last}</td><td class="muted">${r.next}</td>
+    <td><div class="score"><div class="bar"><i style="width:${r.score}%"></i></div><b>${r.score}</b></div></td>
+    <td class="muted">${r.owner}</td></tr>`).join('');
+  el('dormRows').innerHTML = DORM.map(r=>`
+    <tr><td class="who">${r.p}</td><td class="muted">${r.sent}</td>
+    <td class="muted">${r.since}</td><td>${chip(r.seq[0],r.seq[1])}</td></tr>`).join('');
+}
+
+/* ---------- tabs + switch ---------- */
+document.querySelectorAll('.tabbtn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const t = b.dataset.tab;
+    ['portal','staff','notes'].forEach(n=>el('tab-'+n).classList.toggle('hidden', n!==t));
+    el('ctxStrip').classList.toggle('hidden', t!=='portal');
+  });
+});
+el('practiceSwitch').addEventListener('change', e=>renderPortal(e.target.value));
+
+/* init */
+renderPortal('summit');
+renderStaff();
+el('stamp').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+</script>
+</body>
+</html>
